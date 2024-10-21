@@ -12,7 +12,14 @@ on:
       - '.github/workflows/upstream.yml'
   schedule:
     - cron: 0 */12 * * *
-
+    
+repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      packages:
+        description: 'packages'
+        required: false
+        default: 'false'
   watch:
     types: started
   repository_dispatch:
