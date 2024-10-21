@@ -3,8 +3,6 @@ on:
   push:
     paths:
       - '.github/workflows/upstream.yml'
-      - '.gitignore'
-      - '.github/diy/**'
   schedule:
     - cron: 0 */12 * * *
   workflow_dispatch:
@@ -28,14 +26,15 @@ jobs:
       with:
         fetch-depth: 0
 
-
+    - uses: de-vri-es/setup-git-credentials@v2
+      with:
+        credentials: https://kiddin9:${{ secrets.TOKEN_KIDDIN9 }}@github.com/
     
     - name: Set git identity
       run : |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         sudo timedatectl set-timezone "Asia/Shanghai"
-
 
     - name: Syn upstream
       run: |
