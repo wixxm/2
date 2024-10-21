@@ -18,9 +18,15 @@ on:
   repository_dispatch:
 
 jobs:
-  merge:
-    if: github.event.repository.owner.id == github.event.sender.id || ! github.event.sender.id || github.event.sender.id == '119362912'
-    runs-on: Ubuntu-22.04
+  build:
+    if: github.event.repository.owner.id == github.event.sender.id || ! github.event.sender.id
+    runs-on: ubuntu-latest
+
+    name: Update ${{matrix.target}}
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [main]
 
     steps:
     - name: Checkout
