@@ -14,7 +14,8 @@ on:
         description: 'packages'
         required: false
         default: 'false'	
-
+permissions:
+  contents: write
 jobs:
   build:
     if: github.event.repository.owner.id == github.event.sender.id || ! github.event.sender.id
@@ -34,8 +35,8 @@ jobs:
 
     - name: Initialization environment
       run : |
-        git config --global user.email "kenzok8@users.noreply.github.com"
-        git config --global user.name "kenzok8"
+        git config --global user.email "wixxm@users.noreply.github.com"
+        git config --global user.name "wixxm"
         sudo timedatectl set-timezone "Asia/Shanghai"
 
     - name: Syn upstream
