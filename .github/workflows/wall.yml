@@ -1,31 +1,26 @@
-name: Sync packages
-
+name: Merge-upstream
 on:
   push:
     paths:
-      - '.github/workflows/wall.yml'
+      - '.github/workflows/upstream.yml'
+      - '.gitignore'
+      - '.github/diy/**'
   schedule:
-    - cron: 0 */4 * * *
-  repository_dispatch:
+    - cron: 0 */12 * * *
   workflow_dispatch:
     inputs:
-      packages:
-        description: 'packages'
+      ssh:
+        description: 'ssh'
         required: false
-        default: 'false'	
-permissions:
-  contents: write
-        
-jobs:
-  build:
-    if: github.event.repository.owner.id == github.event.sender.id || ! github.event.sender.id
-    runs-on: ubuntu-latest
+        default: 'true'
+  watch:
+    types: started
+  repository_dispatch:
 
-    name: Update ${{matrix.target}}
-    strategy:
-      fail-fast: false
-      matrix:
-        target: [main]
+jobs:
+  merge:
+    if: github.event.repository.owner.id == github.event.sender.id || ! github.event.sender.id || github.event.sender.id == '119362912'
+    runs-on: Ubuntu-22.04
 
     steps:
     - name: Checkout
@@ -33,11 +28,14 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Initialization environment
+
+    
+    - name: Set git identity
       run : |
-        git config --global user.email "419691642@qq.com"
-        git config --global user.name "wixxm"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
         sudo timedatectl set-timezone "Asia/Shanghai"
+
 
     - name: Syn upstream
       run: |
